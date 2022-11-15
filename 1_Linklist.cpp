@@ -3,6 +3,12 @@
 
 using namespace std;
 //单链表
+#define OK 1
+#define ERROR 0
+#define MAXSIZE 100
+#define OVERFLOW -2
+typedef int Status;
+
 typedef struct Node *LinkList;
 typedef struct Node {
     int data;
@@ -18,18 +24,18 @@ LinkList creat(int num) {
         p = new node;
         p->data = i + 1;
         p->next = nullptr;
-        if (head->next == NULL)
+        if (head->next == nullptr)
             head->next = p;
         else
             q->next = p;
         q = p;
     }
-    q->next = NULL;
+    q->next = nullptr;
     return head;
 }
 
 //求单链表长度
-int len(LinkList L) {
+Status len(LinkList L) {
     LinkList p = L->next;
     int i = 0;
     while (p) {
@@ -65,7 +71,7 @@ node *Locatedget(LinkList L, int e) {
 void insert(LinkList head, int index, int element) {
     LinkList p = head->next;
     int j = 1;
-    while (j < index - 1 && p != NULL) {
+    while (j < index - 1 && p != nullptr) {
         p = p->next;
         j++;
     }//p 是index-1的位置  j 是index - 1
@@ -86,7 +92,7 @@ void insert(LinkList head, int index, int element) {
 }
 
 //删除位置i的元素
-int delate(LinkList &L, int i) {
+Status delate(LinkList &L, int i) {
     LinkList p = L;
     int j = 0;
     while ((p->next) && (j < i - 1)) {
@@ -103,7 +109,7 @@ int delate(LinkList &L, int i) {
 //遍历单链表
 void show(LinkList head) {
     LinkList p = head->next;
-    while (p != NULL) {
+    while (p != nullptr) {
         cout << p->data << ' ';
         p = p->next;
     }
@@ -113,7 +119,7 @@ void show(LinkList head) {
 //合并链表
 LinkList combine(LinkList a, LinkList b) {
     LinkList p = a;
-    while (p->next != NULL) {
+    while (p->next != nullptr) {
         p = p->next;
     }
     p->next = b->next;
