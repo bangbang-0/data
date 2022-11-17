@@ -46,9 +46,10 @@ Status Pop(SqStack &S, SElemType &e) {
 //4.¶ÁÕ»¶¥ÔªËØ
 SElemType GetTop(SqStack S, int &e) {
 
-    if (S.top != S.base)
+    if (S.top != S.base) {
         e = *(S.top - 1);
-    return e;
+        return e;
+    } else return 0;
 }
 
 //5.ÅÐ¶¨Õ»¿Õ/Âú²Ù×÷
@@ -107,15 +108,15 @@ void test02(SqStack &S) {
                 }
                 break;
             case 4:
-                if (!GetTop(S, e)) {
-                    cout << "¶ÁÕ»¶¥ÔªËØÊ§°Ü" << endl;
-                } else {
+                if (GetTop(S, e)) {
                     cout << "Õ»¶¥ÔªËØÎª:" << e << endl;
+                } else {
+                    cout << "¶ÁÕ»¶¥ÔªËØÊ§°Ü" << endl;
                 }
                 break;
             case 5:
-                s = StackEmpty(S)? "¿Õ":"·Ç¿Õ";
-                cout<<s<<endl;
+                s = StackEmpty(S) ? "Õ»¿Õ" : "Õ»·Ç¿Õ";
+                cout << s << endl;
                 break;
             case 6:
                 DestroyStack(S);
@@ -129,15 +130,19 @@ void test02(SqStack &S) {
     }
 }
 
-Status main() {
-    SqStack S;
+void menu() {
     cout << "1.³õÊ¼»¯" << endl;
     cout << "2.ÈëÕ»" << endl;
     cout << "3.³öÕ»" << endl;
     cout << "4.¶ÁÕ»¶¥ÔªËØ" << endl;
     cout << "5.ÅÐ¶ÏÕ»¿Õ/Âú" << endl;
     cout << "6.Ïú»Ù²¢ÍË³ö" << endl;
+}
+
+int main() {
+    SqStack S;
+    menu();
     test01(S);
     test02(S);
-    return 0;
+
 }

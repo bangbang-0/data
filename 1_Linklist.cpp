@@ -2,25 +2,25 @@
 #include<iostream>
 
 using namespace std;
-//å•é“¾è¡¨
+//µ¥Á´±í
 #define OK 1
 #define ERROR 0
 #define MAXSIZE 100
 #define OVERFLOW -2
 typedef int Status;
 
-typedef struct Node *LinkList;
 typedef struct Node {
     int data;
-    LinkList next;
-} node;
+    Node* next;
+} node,*LinkList;
 
-//åˆå§‹åŒ–å•é“¾è¡¨
+//³õÊ¼»¯µ¥Á´±í
 LinkList creat(int num) {
     LinkList head, p, q;
     q = head = new node;
     head->next = nullptr;
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++) //Ñ­»·Ã¿´ÎnewÒ»¸öĞÂ½áµã
+    {
         p = new node;
         p->data = i + 1;
         p->next = nullptr;
@@ -34,7 +34,7 @@ LinkList creat(int num) {
     return head;
 }
 
-//æ±‚å•é“¾è¡¨é•¿åº¦
+//Çóµ¥Á´±í³¤¶È
 Status len(LinkList L) {
     LinkList p = L->next;
     int i = 0;
@@ -45,7 +45,7 @@ Status len(LinkList L) {
     return i;
 }
 
-//æŒ‰ä½ç½®æŸ¥æ‰¾
+//°´Î»ÖÃ²éÕÒ
 int Get(LinkList L, int index, int re) {
     LinkList p = L->next;
     int j = 1;
@@ -58,7 +58,7 @@ int Get(LinkList L, int index, int re) {
     return re;
 }
 
-//æŒ‰å€¼æŸ¥æ‰¾
+//°´Öµ²éÕÒ
 node *Locatedget(LinkList L, int e) {
     LinkList p = L->next;
     while (p && p->data != e) {
@@ -67,14 +67,14 @@ node *Locatedget(LinkList L, int e) {
     return p;
 }
 
-//åœ¨ä½ç½®iæ’å…¥ä¸€ä¸ªå…ƒç´ 
+//ÔÚÎ»ÖÃi²åÈëÒ»¸öÔªËØ
 void insert(LinkList head, int index, int element) {
     LinkList p = head->next;
     int j = 1;
     while (j < index - 1 && p != nullptr) {
         p = p->next;
         j++;
-    }//p æ˜¯index-1çš„ä½ç½®  j æ˜¯index - 1
+    }//p ÊÇindex-1µÄÎ»ÖÃ  j ÊÇindex - 1
     if (index == 1) {
         LinkList s;
         s = new node;
@@ -91,7 +91,7 @@ void insert(LinkList head, int index, int element) {
     p->next = s;
 }
 
-//åˆ é™¤ä½ç½®içš„å…ƒç´ 
+//É¾³ıÎ»ÖÃiµÄÔªËØ
 Status delate(LinkList &L, int i) {
     LinkList p = L;
     int j = 0;
@@ -106,7 +106,7 @@ Status delate(LinkList &L, int i) {
     return 0;
 }
 
-//éå†å•é“¾è¡¨
+//±éÀúµ¥Á´±í
 void show(LinkList head) {
     LinkList p = head->next;
     while (p != nullptr) {
@@ -116,7 +116,7 @@ void show(LinkList head) {
     cout << endl;
 }
 
-//åˆå¹¶é“¾è¡¨
+//ºÏ²¢Á´±í
 LinkList combine(LinkList a, LinkList b) {
     LinkList p = a;
     while (p->next != nullptr) {
@@ -126,34 +126,34 @@ LinkList combine(LinkList a, LinkList b) {
     return a;
 }
 
-//é”€æ¯å•é“¾è¡¨
+//Ïú»Ùµ¥Á´±í
 void del(LinkList &L) {
     LinkList tmp;
-    while (L != NULL) {
+    while (L != nullptr) {
         tmp = L->next;
-        delete L; // ä¾æ¬¡é‡Šæ”¾ç»“ç‚¹ã€‚
+        delete L; // ÒÀ´ÎÊÍ·Å½áµã¡£
         L = tmp;
     }
 
-    L = NULL; // å°†é“¾è¡¨æŒ‡é’ˆç½®ç©ºã€‚
-    cout << "é“¾è¡¨å·²åˆ é™¤";
+    L = nullptr; // ½«Á´±íÖ¸ÕëÖÃ¿Õ¡£
+    cout << "Á´±íÒÑÉ¾³ı";
 }
 
 int main() {
     LinkList s = creat(10);
-    cout << "åˆå§‹åŒ–ï¼š";
+    cout << "³õÊ¼»¯£º";
     show(s);
-    cout << endl << "é•¿åº¦ä¸º" << len(s) << endl;
+    cout << endl << "³¤¶ÈÎª" << len(s) << endl;
     int index, element;
-    cout << "æ’å…¥çš„ä½ç½®";
+    cout << "²åÈëµÄÎ»ÖÃ";
     cin >> index;
-    cout << "è¦æ’å…¥çš„æ•°";
+    cout << "Òª²åÈëµÄÊı";
     cin >> element;
     insert(s, index, element);
-    cout << "æ’å…¥å:";
+    cout << "²åÈëºó:";
     show(s);
     delate(s, index);
-    cout << "åˆ é™¤å:";
+    cout << "É¾³ıºó:";
     show(s);
     LinkList b = creat(20);
     cout << "b:";
