@@ -11,32 +11,32 @@ using namespace std;
 
 //顺序队列
 typedef struct {
-    ElemType *base;
-    int front;
-    int rear;
+    ElemType *base;  //构建指针数组
+    int front;       //前指针
+    int rear;        //后指针
 } Queue;
 
 //初始化顺序队列
 Status InitQueue(Queue &Q) {
-    Q.base = new ElemType[MAXSIZE];
-    if (!Q.base)return OVERFLOW;
-    Q.front = Q.rear = 0;
+    Q.base = new ElemType[MAXSIZE];  //new
+    if (!Q.base)return OVERFLOW;     //开辟空间是否成功
+    Q.front = Q.rear = 0;            //置0
     return OK;
 }
 
 //数据元素入队
 Status EnQueue(Queue &Q, ElemType number) {
-    if (Q.rear == MAXSIZE)return ERROR;
-    Q.base[Q.rear] = number;
-    Q.rear++;
+    if (Q.rear == MAXSIZE)return ERROR;   //防止数组越界
+    Q.base[Q.rear] = number;            //赋值
+    ++Q.rear;                           //指针移动
     return OK;
 }
 
 //数据元素出队
 Status DeQueue(Queue &Q, ElemType &e) {
-    if (Q.front == Q.rear)return ERROR;
-    e = Q.base[Q.front];
-    Q.front++;
+    if (Q.front == Q.rear)return ERROR;  //队列空
+    e = Q.base[Q.front];                 //赋值
+    ++Q.front;                           //指针移动
     return OK;
 }
 
@@ -51,22 +51,23 @@ Status GetHead(Queue Q, ElemType &e) {
 bool QueueEmpty(Queue Q) {
     if (Q.front == Q.rear)
         return true;
-    else return false;
+    else
+        return false;
 }
 
 //销毁顺序队列
 Status DestoryQueue(Queue &Q) {
-    if (Q.base) {
+    if (Q.base) {           //如果存在
         Q.rear = Q.front = 0;
-        delete[] Q.base;
+        delete[] Q.base;    // 删除
     }
-    Q.base = nullptr;
+    Q.base = nullptr;   //置空
     return OK;
 }
 
 //队列长度
 Status QueueLength(Queue Q) {
-    return Q.rear - Q.front;
+    return Q.rear - Q.front;   //两指针差为长度
 }
 
 void menu() {
@@ -86,41 +87,41 @@ int main() {
     InitQueue(Q);
     menu();
     while (choose != 0) {
-        cout << "请选择操作：" << endl;		//输入选择
+        cout << "请选择操作：" << endl;        //输入选择
         do {
             cin >> choose;
-            if (choose < 0 || choose>6)
+            if (choose < 0 || choose > 6)
                 cout << "输入错误,请重新输入:" << endl;
-        } while (choose < 0 || choose>6);
+        } while (choose < 0 || choose > 6);
         switch (choose) {
             case 1:
-               if (InitQueue(Q))cout<<"队列初始化完成"<<endl;
+                if (InitQueue(Q))cout << "队列初始化完成" << endl;
                 break;
             case 2:
-                cout<<"输入入队元素"<<endl;
-                cin>>e;
-                EnQueue(Q,e);
-                cout<<"该元素入队成功"<<endl;
+                cout << "输入入队元素" << endl;
+                cin >> e;
+                EnQueue(Q, e);
+                cout << "该元素入队成功" << endl;
                 break;
             case 3:
-                DeQueue(Q,e);
-                cout<<"元素"<<e<<"出队"<<endl;
+                DeQueue(Q, e);
+                cout << "元素" << e << "出队" << endl;
                 break;
             case 4:
-                if(GetHead(Q,e))cout<<"队头为"<<e<<endl;
-                else cout<<"队列为空"<<endl;
+                if (GetHead(Q, e))cout << "队头为" << e << endl;
+                else cout << "队列为空" << endl;
                 break;
             case 5:
-                if(QueueEmpty(Q))cout<<"该队列为空"<<endl;
-                else cout<<"该队列非空"<<endl;
+                if (QueueEmpty(Q))cout << "该队列为空" << endl;
+                else cout << "该队列非空" << endl;
             case 6:
-                cout<<"长度为:"<<QueueLength(Q)<<endl;
+                cout << "长度为:" << QueueLength(Q) << endl;
             case 0:
                 exit(0);
             default:
                 break;
         }
-        }
+    }
     system("pause");
     return 0;
 }

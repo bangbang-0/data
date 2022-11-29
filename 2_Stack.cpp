@@ -19,7 +19,7 @@ typedef struct {
 //（1）初始化顺序栈；
 Status InitStack(Sqstack &S) /*顺序栈的初始化*/
 {
-    S.base = new ElemType[MAXSIZE];
+    S.base = new ElemType[MAXSIZE];  //堆区开辟空间
     if (!S.base) return OVERFLOW;
     S.top = S.base;
     S.stacksize = MAXSIZE;
@@ -28,15 +28,15 @@ Status InitStack(Sqstack &S) /*顺序栈的初始化*/
 
 //（2）入栈
 Status Push(Sqstack &S, ElemType e) {
-    if (S.top - S.base == S.stacksize)return ERROR;
-    *S.top++ = e;
+    if (S.top - S.base == S.stacksize)return ERROR; //防越界
+    *S.top++ = e;     //后++ 先赋值再移动
     return OK;
 }
 
 //（3）出栈
 Status Pop(Sqstack &S, ElemType &e) {
     if (S.base == S.top) return ERROR;
-    e = *--S.top;
+    e = *--S.top;    //前-- 先移动后取值
     return OK;
 }
 
@@ -44,7 +44,7 @@ Status Pop(Sqstack &S, ElemType &e) {
 Status GetTop(Sqstack S, ElemType &e) //取栈顶
 {
     if (S.top == S.base) return ERROR;
-    e = *--S.top;
+    e = *--S.top;     //前-- 先移动后取值,由于值传递,不做实际处理
     return OK;
 }
 
