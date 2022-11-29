@@ -1,6 +1,3 @@
-//
-// Created by 29789 on 2022/11/17.
-//
 
 #include<iostream>
 #include <string>
@@ -18,13 +15,13 @@ using namespace std;
 
 
 typedef struct sqstack {
-    ElemType data;
-    sqstack *next;
+    ElemType data;          //数据域
+    sqstack *next;          //指针域
 } *Sqstack;
 //（1）初始化
 Status InitStack(Sqstack &S) /*链栈的初始化*/
 {
-    Sqstack head = new sqstack;
+    Sqstack head = new sqstack;  //头结点
     head->next = nullptr;
     S = head;
     return OK;
@@ -34,19 +31,19 @@ Status InitStack(Sqstack &S) /*链栈的初始化*/
 Status Push(Sqstack &S, ElemType e) {
     Sqstack p = new sqstack;
     if(!p)return OVERFLOW;
-    p->data = e;
-    p->next = S->next;
-    S->next = p;
+    p->data = e;     //赋值
+    p->next = S->next; //插入头结点和首元结点之间
+    S->next = p;     // 用头结点索引
     return OK;
 }
 
 //（3）出栈
 Status Pop(Sqstack &S, ElemType &e) {
-    if(S->next) {
+    if(S->next) {       //如果非空
         Sqstack p = S->next;
         e = p->data;
-        S->next = p->next;
-        delete p;
+        S->next = p->next;   //将次元结点和头结点连接
+        delete p;  //删除首元结点
         return OK;
     }
     else return ERROR;
@@ -82,11 +79,14 @@ int StackLength(Sqstack S)
 {
     int len =0;
     Sqstack p=S->next;
-    while(p)
+    cout<<"head"<<"->";
+    while(p) //遍历得到长度
     {
+        cout<<p->data<<" -> ";
         p=p->next;
         ++len;
     }
+    cout<<"nullptr"<<endl;
     return len;
 }
 
