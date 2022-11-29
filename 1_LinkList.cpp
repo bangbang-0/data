@@ -8,7 +8,7 @@ using namespace std;
 typedef int ElemType;
 typedef struct LNode {
     ElemType data;          //结点的数据域
-    struct LNode *next;     //结点的指针域
+    LNode *next;     //结点的指针域
 } LNode, *LinkList;
 void ListDisplay(LinkList &L);
 //（1）初始化单链表（无参和有参）；
@@ -181,6 +181,7 @@ int main() {
     i=11;
     cout<<"删除第11位置的结点"<<"......";
     ListDelete(s, i);//删除第11位置的结点
+    cout<<"输入三个数"<<endl;
     LinkList b = CreateList(3);//有参构造
     MergeList(s, b); //合并链表
     cout<<"合并后:"<<endl;

@@ -1,148 +1,132 @@
 
-#include<iostream>
-#include <string>
 //顺序栈
-using namespace std;
+#include <iostream>
 
-#define OK 1
-#define ERROR 0
+using namespace std;
 #define MAXSIZE 100
 #define OVERFLOW -2
+#define OK 1
+#define ERROR 0
+
+typedef int ElemType;
 typedef int Status;
-typedef int SElemType;
-
 typedef struct {
-    SElemType *base;
-    SElemType *top;
     int stacksize;
-} SqStack;
+    ElemType *top;
+    ElemType *base;
+} Sqstack;
 
-//1.初始化
-Status InitStack(SqStack &S) {
-    S.base = new SElemType[MAXSIZE];
-    if (!S.base)
-        exit(OVERFLOW);
+//（1）初始化顺序栈；
+Status InitStack(Sqstack &S) /*顺序栈的初始化*/
+{
+    S.base = new ElemType[MAXSIZE];
+    if (!S.base) return OVERFLOW;
     S.top = S.base;
     S.stacksize = MAXSIZE;
     return OK;
 }
 
-//2.入栈
-Status Push(SqStack &S, SElemType e) {
-    if (S.top - S.base == S.stacksize)
-        return ERROR;
+//（2）入栈
+Status Push(Sqstack &S, ElemType e) {
+    if (S.top - S.base == S.stacksize)return ERROR;
     *S.top++ = e;
     return OK;
 }
 
-//3.出栈
-Status Pop(SqStack &S, SElemType &e) {
-    if (S.top == S.base)
-        return ERROR;
+//（3）出栈
+Status Pop(Sqstack &S, ElemType &e) {
+    if (S.base == S.top) return ERROR;
     e = *--S.top;
     return OK;
 }
 
-//4.读栈顶元素
-SElemType GetTop(SqStack S, int &e) {
-
-    if (S.top != S.base) {
-        e = *(S.top - 1);
-        return e;
-    } else return 0;
-}
-
-//5.判定栈空/满操作
-Status StackEmpty(SqStack S) {
-
-    if (S.top == S.base)
-        return OK;
-    else
-        return ERROR;
-}
-
-//6.销毁顺序栈
-Status DestroyStack(SqStack &S) {
-
-    delete (S.base);
-    S.top = nullptr;
-    S.base = nullptr;
-    S.stacksize = 0;
+//（4）读栈顶元素；
+Status GetTop(Sqstack S, ElemType &e) //取栈顶
+{
+    if (S.top == S.base) return ERROR;
+    e = *--S.top;
     return OK;
 }
 
-void test01(SqStack &S) {
-    int choose;
-    cin >> choose;
-    if (choose == 1) {
-        InitStack(S);
-        cout << "初始化成功" << endl;
-    } else {
-        cout << "未初始化" << endl;
-        test01(S);
-    }
+//（5）判定栈空/满操作；
+bool StackEmpty(Sqstack &S)//栈判空
+{
+    if (S.top == S.base)return ERROR;
+    else return OK;
 }
 
-void test02(SqStack &S) {
+//（6）销毁顺序栈。
+Status DestroyStack(Sqstack &S) {
+    if (S.base) {
+        delete S.base;
+        S.top = S.base = nullptr;
+        S.stacksize = 0;
+    }
+    return OK;
+}
+
+int StackLength(Sqstack S)//求栈长
+{
+    return S.top-S.base;
+}
+
+int main()
+{
     int choose = -1;
-    SElemType e;
-    string s;
+    ElemType e;		//定义一个结构体的元素e
+    Sqstack S;		//定义一个顺序栈的变量S
+    InitStack(S);		//初始化顺序栈
+    cout << "顺序栈:" << endl << endl;
+    cout << "1. 顺序栈的初始化" << endl;
+    cout << "2. 判断栈是否为空" << endl;
+    cout << "3. 判断顺序栈的长度" << endl;
+    cout << "4. 销毁顺序栈" << endl;
+    cout << "5. 顺序栈入栈" << endl;
+    cout << "6. 顺序栈出栈" << endl;
+    cout << "7. 取顺序栈顶元素" << endl;
+    cout << "0. 退出" << endl << endl;
+
     while (choose != 0) {
-        cout << "输入操作:";
-        cin >> choose;
-        switch (choose) {
+
+        cout << "请选择操作：" << endl;		//输入选择
+        do {
+            cin >> choose;
+            if (choose < 0 || choose>7)
+                cout << "输入错误,请重新输入:" << endl;
+        } while (choose < 0 || choose>7);
+        switch (choose)
+        {
+            case 1:
+                if (InitStack(S))  cout << "顺序栈初始化成功！" << endl << endl;
+                else cout << "顺序栈初始化失败！" << endl << endl;;
+                break;
             case 2:
-                cout << "请输入入栈元素：";
-                cin >> e;
-                if (!Push(S, e)) {
-                    cout << "入栈失败！" << endl;
-                } else {
-                    cout << "元素 " << e << " 入栈成功" << endl;
-                }
+                if (StackEmpty(S))	cout << "此顺序栈为空！" << endl << endl;
+                else cout << "此顺序栈不为空！" << endl << endl;
                 break;
             case 3:
-                if (!Pop(S, e)) {
-                    cout << "出栈失败" << endl;
-                } else {
-                    cout << "元素 " << e << " 出栈成功" << endl;
-                }
+                cout << "此时栈内共有" << StackLength(S) << "个元素" << endl<<endl;
                 break;
             case 4:
-                if (GetTop(S, e)) {
-                    cout << "栈顶元素为:" << e << endl;
-                } else {
-                    cout << "读栈顶元素失败" << endl;
-                }
+                if (DestroyStack(S)) cout << "销毁顺序表成功" << endl << endl;
                 break;
             case 5:
-                s = StackEmpty(S) ? "栈空" : "栈非空";
-                cout << s << endl;
+                cout << "请输入" << endl;
+                cin >> e;
+                if (Push(S, e))	cout << "该元素入栈成功" << endl << endl;
                 break;
             case 6:
-                DestroyStack(S);
-                cout << "已销毁" << endl;
-                exit(0);
+                Pop(S, e);
+                cout << "出栈元素为：" << endl;
+                cout << e<< endl<<endl;
                 break;
-            default:
-                cout << "错误输入" << endl;
-                test02(S);
+            case 7:
+                GetTop(S, e);
+                cout << "栈顶的元素为：" << endl;
+                cout << e << endl << endl;
+                break;
+            default:break;
         }
     }
-}
-
-void menu() {
-    cout << "1.初始化" << endl;
-    cout << "2.入栈" << endl;
-    cout << "3.出栈" << endl;
-    cout << "4.读栈顶元素" << endl;
-    cout << "5.判断栈空/满" << endl;
-    cout << "6.销毁并退出" << endl;
-}
-
-int main() {
-    SqStack S;
-    menu();
-    test01(S);
-    test02(S);
-
+    return 0;
 }

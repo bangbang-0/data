@@ -6,123 +6,121 @@
 #define MAXSIZE 100
 #define OVERFLOW -2
 typedef int Status;
+typedef int ElemType;
 using namespace std;
+
+//顺序队列
 typedef struct {
-    int *sts;
+    ElemType *base;
     int front;
     int rear;
 } Queue;
 
 //初始化顺序队列
-void iniQueue(Queue &Q, int i) {
-    Q.sts = new int[i];
+Status InitQueue(Queue &Q) {
+    Q.base = new ElemType[MAXSIZE];
+    if (!Q.base)return OVERFLOW;
     Q.front = Q.rear = 0;
+    return OK;
 }
 
 //数据元素入队
-Status toQueue(Queue &Q, int number) {
-    if (Q.rear == sizeof(Q.sts))return OVERFLOW;
-    Q.sts[Q.rear] = number;
+Status EnQueue(Queue &Q, ElemType number) {
+    if (Q.rear == MAXSIZE)return ERROR;
+    Q.base[Q.rear] = number;
     Q.rear++;
     return OK;
 }
 
 //数据元素出队
-Status outQueue(Queue &Q) {
-    int number;
-    if (Q.front == Q.rear)return -1;
-    number = Q.sts[Q.front];
+Status DeQueue(Queue &Q, ElemType &e) {
+    if (Q.front == Q.rear)return ERROR;
+    e = Q.base[Q.front];
     Q.front++;
-    return number;
+    return OK;
 }
 
 //读队头元素
-Status headQueue(Queue Q) {
-    return Q.sts[Q.front];
+Status GetHead(Queue Q, ElemType &e) {
+    if (Q.rear == Q.front)return ERROR;
+    e = Q.base[Q.front];
+    return OK;
 }
 
 //判定数据元素空/满
-void judgeQueue(Queue Q, int i) {
-    string judge;
+bool QueueEmpty(Queue Q) {
     if (Q.front == Q.rear)
-        judge = "空";
-    else
-        judge = "非空";
-    cout << "该队列为" << judge << endl;
+        return true;
+    else return false;
 }
 
 //销毁顺序队列
-void delQueue(Queue &Q) {
-    delete[] Q.sts;
-    cout << "已销毁";
+Status DestoryQueue(Queue &Q) {
+    if (Q.base) {
+        Q.rear = Q.front = 0;
+        delete[] Q.base;
+    }
+    Q.base = nullptr;
+    return OK;
+}
+
+//队列长度
+Status QueueLength(Queue Q) {
+    return Q.rear - Q.front;
 }
 
 void menu() {
-    cout << "1.出队" << endl;
-    cout << "2.输出队头" << endl;
-    cout << "3.查看队是否空" << endl;
+    cout << "1.初始化队列" << endl;
+    cout << "2.入队" << endl;
+    cout << "3.出队" << endl;
+    cout << "4.输出队头" << endl;
+    cout << "5.查看队是否空" << endl;
+    cout << "6.队列长度" << endl;
     cout << "0.销毁并退出" << endl;
 }
 
-void choice(Queue &s, int MAX) {
-    int choose = 0;
-    while (true) {
-        system("pause");
-        system("cls");
-        menu();
-        cout << "输入操作:" << endl;
-        cin >> choose;
+int main() {
+    int choose = -1;
+    ElemType e;
+    Queue Q;
+    InitQueue(Q);
+    menu();
+    while (choose != 0) {
+        cout << "请选择操作：" << endl;		//输入选择
+        do {
+            cin >> choose;
+            if (choose < 0 || choose>6)
+                cout << "输入错误,请重新输入:" << endl;
+        } while (choose < 0 || choose>6);
         switch (choose) {
             case 1:
-                if (MAX == 0) cout << "无数据";
-                int n;
-                cout << "出队几个元素";
-                cin >> n;
-                while (n > MAX) {
-                    cout << "重新输入";
-                    cin >> n;
-                }
-                MAX -= n;
-                while (n-- > 0) {
-                    cout << "出队元素:" << outQueue(s) << endl;
-                }
+               if (InitQueue(Q))cout<<"队列初始化完成"<<endl;
                 break;
             case 2:
-                cout << headQueue(s) << endl;
+                cout<<"输入入队元素"<<endl;
+                cin>>e;
+                EnQueue(Q,e);
+                cout<<"该元素入队成功"<<endl;
                 break;
             case 3:
-                judgeQueue(s, MAX);
+                DeQueue(Q,e);
+                cout<<"元素"<<e<<"出队"<<endl;
                 break;
+            case 4:
+                if(GetHead(Q,e))cout<<"队头为"<<e<<endl;
+                else cout<<"队列为空"<<endl;
+                break;
+            case 5:
+                if(QueueEmpty(Q))cout<<"该队列为空"<<endl;
+                else cout<<"该队列非空"<<endl;
+            case 6:
+                cout<<"长度为:"<<QueueLength(Q)<<endl;
             case 0:
                 exit(0);
             default:
-                cout << "重新输入:" << endl;
-                choice(s, MAX);
+                break;
         }
-    }
-}
-
-
-void test01() {
-    Queue s;
-    int MAX;
-    cout << "输入队列长度:";
-    cin >> MAX;
-    iniQueue(s, MAX);
-    int i = 0;
-    while (i++ < MAX) {
-        printf("输入第%d个数", i);
-        int n = 0;
-        cin >> n;
-        toQueue(s, n);
-    }
-    choice(s, MAX);
-
-    delQueue(s);
-}
-
-int main() {
-    test01();
+        }
     system("pause");
     return 0;
 }
