@@ -8,7 +8,7 @@ using namespace std;
 typedef int ElemType;
 typedef struct LNode {
     ElemType data;          //结点的数据域
-    LNode *next;     //结点的指针域
+    struct LNode *next;     //结点的指针域
 } LNode, *LinkList;
 void ListDisplay(LinkList &L);
 //（1）初始化单链表（无参和有参）；
@@ -145,13 +145,25 @@ void ListDisplay(LinkList &L) {//遍历
 
 //（8）合并链表
 LinkList MergeList(LinkList &LA, LinkList &LB) {
-    LinkList p = LA;//创建操作指针
-    while (p->next) {
-        p = p->next;
-    }//移动操作指针到尾结点
-    p->next = LB->next;//尾结点的next指向 LB头指针的第一个结点
-    delete LB;//删除无用头结点
-    return LA;
+    //两个链表中一个为空则返回另一个，两个都为空则返回空（递归的结束条件）
+    if (LA == nullptr)
+        return LB;
+    if (LB == nullptr)
+        return LA;
+
+    LinkList head = nullptr; //新链表的头
+    //将两个链表第一个结点的较小结点尾插到新链表后
+    if (LA->data > LB->data){
+        head = LB;
+        LB = LB->next;
+    }
+    else{
+        head = LA;
+        LA = LA->next;
+    }
+    //递归合并链表，并将合并的链表尾插到新链表后
+    head->next = MergeList(LA, LB);
+    return head; //返回新链表
 }
 
 //（9）销毁单链表
@@ -181,11 +193,11 @@ int main() {
     i=11;
     cout<<"删除第11位置的结点"<<"......";
     ListDelete(s, i);//删除第11位置的结点
-    cout<<"输入三个数"<<endl;
+    cout<<"按升序输入三个数"<<endl;
     LinkList b = CreateList(3);//有参构造
-    MergeList(s, b); //合并链表
+    LinkList p=MergeList(s->next, b->next); //合并链表
     cout<<"合并后:"<<endl;
-    ListDisplay(s);
+    ListDisplay(p);
     del(s); //删除链表
     return 0;
 }
