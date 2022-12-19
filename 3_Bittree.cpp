@@ -4,7 +4,6 @@
 
 //¶þ²æÊ÷
 
-#define MAXSIZE 100
 #define OVERFLOW -2
 #define OK 1
 #define ERROR 0
