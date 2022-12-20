@@ -1,5 +1,5 @@
 
-//¹þ·òÂüÊ÷
+//å“ˆå¤«æ›¼æ ‘
 #include<iostream>
 #include<string>
 #include <map>
@@ -34,7 +34,7 @@ int main() {
             T[i].weight = x.second;
             ++i;
         }
-        //´´½¨¹þ·òÂüÊ÷
+        //åˆ›å»ºå“ˆå¤«æ›¼æ ‘
         for (int j = len + 1; j < 2 * len; ++j) {
             int s1, s2;
             int min = INT_MAX;
@@ -46,7 +46,7 @@ int main() {
                     s1=i;
                 }
             }
-            int temp=T[loc].weight,tep=loc;//ÔÝ´æ,ÔÙÕÒµÚ¶þ¸ö×îÐ¡Öµ
+            int temp=T[loc].weight,tep=loc;//æš‚å­˜,å†æ‰¾ç¬¬äºŒä¸ªæœ€å°å€¼
             T[loc].weight= INT_MAX;
             min = INT_MAX;
             for (int i = 1; i <= j - 1; i++) {
